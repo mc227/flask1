@@ -191,21 +191,15 @@ def check_password(password):
     :param password:
     :return: Boolean state for password check
     """
-    common_passwords = []
-
     try:
         with open(PATH, "r") as in_file:
             data = json.load(in_file)
 
-        common_passwords = data["COMMON PASSWORDS"]
     except (KeyError, IOError):
         pass
 
     if 8 < len(password) > 64:
         flash("Your password must be greater than 7 characters and less than 65.", category="warning")
-        return False
-    elif password in common_passwords:
-        flash("Your password is too common, please try something more complicated.", category="warning")
         return False
 
     return True
