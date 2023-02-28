@@ -467,48 +467,14 @@
     "LOGS": [
         {
             "127.0.0.1": {
-                "ATTEMPT": 1,
+                "ATTEMPT": 3,
                 "DATE": "2023-02-28",
                 "FLAGS": "",
-                "TIME": "13:29:12"
+                "TIME": "13:32:28"
             }
         }
     ],
     "USERS": [
-        {
-            "markcostales.mark@gmail.com": {
-                "KEY": "j1umg2UYdEnFShkU5aHcaOLIBf6l6oobiPOVYcvEk6k=",
-                "PASSWORD": "gAAAAABj_hrDbrEEpLQF_I3upQuww7M9viHs8BcelcOTDxDwqUbJARSBhEhaRXfMWSXq47FgdVKHVM4UN-KOJak1AmSU2Cqt6w==",
-                "USERNAME": "Mark Costales"
-            }
-        },
-        {
-            "costalesmark@yahoo.com": {
-                "KEY": "rSMuF0weWWdqoJytxQ_poyytKQxFSKc65vwOeIIMgnI=",
-                "PASSWORD": "gAAAAABj_kKQK8R5f_h4eedIu1RVEaHXkGPEntWv1pbN6fxUCzYvmgUF4aEI8HfjvGT3O_kG-LwZ4dA1E1abSHzf55_A4PJIoA==",
-                "USERNAME": "Mark Costales"
-            }
-        },
-        {
-            "markc.costales@gmail.com": {
-                "KEY": "zsZ1zg9ds_aLf-_LAqXZyXV_6cHiaGWURl_1NbJIhm0=",
-                "PASSWORD": "gAAAAABj_kKv8mYvwi6LAxNjtMMi58O5wv-LDnb2LxJgbtXxq2cJCkdczb1s5dFYiz342NzQds4paoRhM2YqKyKkkOldb9y5ag==",
-                "USERNAME": "Mark Costales"
-            }
-        },
-        {
-            "celine.sugay@gmail.com": {
-                "KEY": "zhmXOz-p456plsafCfMdgoCIZGtbNPjpTuEfOS8byLU=",
-                "PASSWORD": "gAAAAABj_kNme3MzebjWqYa7JGnE-NsZQKltjIPJVzy-Zwz4ILwQ2Pp12W1ie-xbn6d66DeXqaWUzEX2T3mdZZ6IseUNoVP67w==",
-                "USERNAME": "Mark Costales"
-            }
-        },
-        {
-            "person@gmail.com": {
-                "KEY": "6PtCRn82VAtgBwMdt5TDDZGb7RFfGkbgxzEMdJ2L99Y=",
-                "PASSWORD": "gAAAAABj_kacdpLTrnMFx7PxA5q3USgTYJ8Rk694nWaKTTfmkJKgxZOdQZn1CFI7qxagxMQS2izvcCEj2urdCUpXMUCcRUN69A==",
-                "USERNAME": "Mark Costales"
-            }
-        }
+        
     ]
 }

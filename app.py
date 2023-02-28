@@ -1,29 +1,19 @@
+"""
+Derek Flask App 2.0
+"""
 import getpass
 import json
 import os
 from datetime import datetime
 
 from cryptography.fernet import Fernet
-from flask import Flask, redirect, url_for, render_template, request, session, g, flash
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 from ip2geotools.databases.noncommercial import DbIpCity
 
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
 PATH = f"{os.getcwd()}/static/data/data.json"
-
-
-
-# @app.before_request
-# def before_request():
-#     """
-#     Establish global user_id from session.
-#     :return:
-#     """
-#     if "user_id" in session:
-#         g.user = session["user_id"]
-#     else:
-#         g.user = None
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -109,8 +99,7 @@ def admin():
 
 def check_user(email, password):
     """
-    Checks if user exists and creates new user if not. Logs failed login
-    attempt if password is incorrect and flashes screen.
+    Checks if user exists and logs failed login attempt if password is incorrect.
     :param email:
     :param password:
     :return: Boolean state for user check
@@ -121,9 +110,11 @@ def check_user(email, password):
         with open(PATH, "r") as in_file:
             data = json.load(in_file)
 
+        user_exists = False
         for user in data["USERS"]:
             for key in user.keys():
                 if key == email:
+                    user_exists = True
                     if handle_password(user[email]["KEY"], user[email]["PASSWORD"], decrypt=True) == password:
                         if not check_logs(ip_addr):
                             session["user_id"] = user[email]["USERNAME"]
@@ -133,11 +124,13 @@ def check_user(email, password):
                         flash("Your password is incorrect.", category="danger")
                         return False
 
-        flash("User does not exist, attempting to create account.", category="warning")
-        create_account(email, password)
+        if not user_exists:
+            flash("User does not exist.", category="warning")
+
     except (KeyError, IOError):
         flash("Cannot communicate with server. Please try again later.", category="danger")
         return False
+
 
 
 def handle_password(key, password, decrypt=False):
