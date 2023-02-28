@@ -15,6 +15,17 @@ app.secret_key = os.urandom(16)
 
 PATH = f"{os.getcwd()}/static/data/data.json"
 
+def get_date():
+    """
+    This function gets the current date (e.g. April 24, 2020).
+    :return: date
+    """
+    today = datetime.today()
+    date = today.strftime("%B %d, %Y")  # Month, day and year
+
+    return date
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -29,12 +40,20 @@ def login():
         password = request.form["password"]
 
         if check_user(email, password):
-            return redirect(url_for("splash"))
+            return redirect(url_for("index"))
         else:
             return redirect(url_for("login"))
 
     return render_template("login.html")
 
+@app.route("/index")
+def index():
+    """
+    renders index .html
+    """
+    date = get_date()
+
+    return render_template("index.html", content=[date])
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -79,15 +98,20 @@ def reset():
     return render_template("password-reset.html")
 
 
-@app.route("/splash")
-def splash():
+@app.route("/about")
+def about():
     """
-    Redirects to Splash page after successful authentication.
-    :return: Splash page
+    renders the about page
     """
-    return render_template("splash.html")
+    return render_template("about.html")
 
 
+@app.route("/contact")
+def contact():
+    """
+    renders contact page
+    """
+    return render_template("contact.html")
 @app.route("/admin")
 def admin():
     """

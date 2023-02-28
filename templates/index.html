@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home Page</title>
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <link href="../static/fonts/ionicons.min.css" rel="stylesheet">
+    <link href="../static/css/styles.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>My first Website using Flask</h1>
+        <nav>
+            <ul>
+                <li><a href="index">Home</a></li>
+                <li><a href="about">About</a></li>
+                <li><a href="contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <!--Content Area add content here-->
+        <h2>Dereck Watters Solutions, LLC.</h2>
+        <p>Current date: <span id="date"></span></p>
+        <p>Current time: <span id="ti"></span></p>
+        <p><b>DW Solutions, LLC</b> is a Veteran Owned Small Business, founded in 2024 and headquartered at Aberdeen Proving Ground, Maryland. Our diverse workforce includes prior military and civilian service personnel who continue to serve by applying their experience and analytical skills to solve some of the most challenging systems engineering problems facing our Government. <blockquote cite="http://loripsum.net"> <p><b></b>We develop solutions  for you based on your requirements, limitations, and potential risks for the <a rel="noopener" href="http://loripsum.net/" target="_blank">Department of Defense </a>as well as the <i>commercial sector.</i></p></blockquote>
+        <ol>
+            <li><a rel="noopener" href="https://www.army.mil/">Link to US ARMY</a></li>
+            <li><a rel="noopener" href="https://www.navy.com/">Link to US NAVY</a></li>
+            <li><a rel="noopener" href="https://www.airforce.com/">Link to US AIR FORCE</a></li>
+        </ol>
+    </p></section>
+    <footer> &#169; Dereck Watters </footer>
+    <script>
+        function updateTime() {
+            var clockElement = document.getElementById('ti');
+            var dateElement = document.getElementById('date');
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+            var month = currentTime.getMonth() + 1;
+            var day = currentTime.getDate();
+            var year = currentTime.getFullYear();
+
+            // Add leading zero to minutes and seconds if they are less than 10
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            var timeString = hours + ":" + minutes + ":" + seconds;
+            var dateString = month + "/" + day + "/" + year;
+            clockElement.innerHTML = timeString;
+            dateElement.innerHTML = dateString;
+        }
+
+        // Call updateTime function every second
+        setInterval(updateTime, 1000);
+
+        
+    </script>
+    
+</body>
+
+</html>
