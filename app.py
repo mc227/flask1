@@ -10,19 +10,20 @@ from ip2geotools.databases.noncommercial import DbIpCity
 app = Flask(__name__)
 app.secret_key = os.urandom(16)
 
-PATH = "{}{}".format(os.getcwd(), "/static/data/data.json")
+PATH = f"{os.getcwd()}/static/data/data.json"
 
 
-@app.before_request
-def before_request():
-    """
-    Establish global user_id from session.
-    :return:
-    """
-    if "user_id" in session:
-        g.user = session["user_id"]
-    else:
-        g.user = None
+
+# @app.before_request
+# def before_request():
+#     """
+#     Establish global user_id from session.
+#     :return:
+#     """
+#     if "user_id" in session:
+#         g.user = session["user_id"]
+#     else:
+#         g.user = None
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -43,6 +44,27 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """
+    Registers a new user account.
+    :return: Registration page
+    """
+    if request.method == "POST":
+        email = request.form["email"]
+        password = request.form["password"]
+
+        if check_password(password):
+            create_account(email, password)
+            flash("Your account has been created successfully. Please login to continue.",
+                  category="success")
+            return redirect(url_for("login"))
+        else:
+            flash("Your password does not meet the criteria. Please try again.", category="warning")
+
+    return render_template("register.html")
 
 
 @app.route("/password-reset", methods=["GET", "POST"])
@@ -130,7 +152,7 @@ def handle_password(key, password, decrypt=False):
         key = str.encode(key)
         cipher_suite = Fernet(key)
         user_password = str.encode(password)
-        ciphered_text = (cipher_suite.decrypt(user_password))
+        ciphered_text = cipher_suite.decrypt(user_password)
         deciphered_text = bytes.decode(ciphered_text)
 
         return deciphered_text
