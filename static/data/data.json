@@ -475,19 +475,5 @@
         }
     ],
     "USERS": [
-        {
-            "markcostales.mark@gmail.com": {
-                "KEY": "zVMNtPaamdNtr5FQfMrbWPjxBTyOp5FSmwdFxQVkwro=",
-                "PASSWORD": "gAAAAABj_krwxX1JF0nNbCCWI0RSypVcZHoory3h9FeBhxxDj94GdukhZw-PlFCRsaCIvpaTINbunitSoGMtN9XsFT0lr8_bKQ==",
-                "USERNAME": "Mark Costales"
-            }
-        },
-        {
-            "costalesmark@yahoo.com": {
-                "KEY": "mYGCEpLXzJflZfvgKCeIoc7CzKv3TEZtWDD_E5KLg-U=",
-                "PASSWORD": "gAAAAABj_lb1pZGEfRfm0yokPZHZesMeLTlh4w4ik8N03zD7RtA0HRI2Fu9Gkg-53F007h5vEc8WeQ2x2s_WdGC-Ws-HwJ1UAg==",
-                "USERNAME": "Mark Costales"
-            }
-        }
     ]
 }
