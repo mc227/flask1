@@ -1,5 +1,5 @@
 """
-Derek Flask App 2.0
+Dereck Watters Flask App 2.0
 """
 import getpass
 import json
@@ -131,7 +131,7 @@ def check_user(email, password):
     ip_addr = request.environ['REMOTE_ADDR']
 
     try:
-        with open(PATH, "r") as in_file:
+        with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
 
         user_exists = False
@@ -139,7 +139,8 @@ def check_user(email, password):
             for key in user.keys():
                 if key == email:
                     user_exists = True
-                    if handle_password(user[email]["KEY"], user[email]["PASSWORD"], decrypt=True) == password:
+                    if handle_password(user[email]["KEY"],
+                                       user[email]["PASSWORD"], decrypt=True) == password:
                         if not check_logs(ip_addr):
                             session["user_id"] = user[email]["USERNAME"]
                             return True
@@ -192,14 +193,15 @@ def check_password(password):
     :return: Boolean state for password check
     """
     try:
-        with open(PATH, "r") as in_file:
+        with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
 
     except (KeyError, IOError):
         pass
 
     if 8 < len(password) > 64:
-        flash("Your password must be greater than 7 characters and less than 65.", category="warning")
+        flash("Your password must be greater than 7 characters and less than 65.",
+               category="warning")
         return False
 
     return True
@@ -222,27 +224,30 @@ def check_logs(ip_addr):
             data = json.load(in_file)
 
         for log in data["LOGS"]:
-            for ip in log.keys():
-                if ip == ip_addr:
+            for ip_var in log.keys():
+                if ip_var == ip_addr:
                     ip_found = True
-                    if int(time.replace(":", "")) - int(log[ip]["TIME"].replace(":", "")) > 300:
+                    if int(time.replace(":", "")) - int(log[ip_var]["TIME"].replace(":", "")) > 300:
                         acc_locked = False
-                        log[ip].update(ATTEMPT=1, DATE=date, TIME=time, FLAGS="")
+                        log[ip_var].update(ATTEMPT=1, DATE=date, TIME=time, FLAGS="")
                     else:
-                        log[ip]["ATTEMPT"] += 1
-                        log[ip].update(DATE=date, TIME=time)
-                        if log[ip]["ATTEMPT"] > 5:
+                        log[ip_var]["ATTEMPT"] += 1
+                        log[ip_var].update(DATE=date, TIME=time)
+                        if log[ip_var]["ATTEMPT"] > 5:
                             acc_locked = True
-                            flash("Too many login attempts. Please wait 5 minutes and try again.", category="warning")
-                            flag = DbIpCity.get('147.229.2.90', api_key='free')  # Placeholder ip_addr
+                            flash("Too many login attempts. Please wait 5 minutes and try again.",
+                                  category="warning")
+                            flag = DbIpCity.get('147.229.2.90', api_key='free')
                             flag = flag if flag else "(Unable to obtain location)"
-                            log[ip].update(FLAGS=f"{ip_addr} had {log[ip]['ATTEMPT']} failed login attempts within 5 "
-                                                 f"minutes on {date} from LAT/LONG: {flag.latitude, flag.longitude}.")
+                            log[ip_var].update(FLAGS=f"{ip_addr} had {log[ip_var]['ATTEMPT']} \
+                                           failed login attempts within 5 "
+                                                 f"minutes on {date} from LAT/LONG: \
+                                                    {flag.latitude, flag.longitude}.")
 
         if not ip_found:
             data["LOGS"].append({ip_addr: {"ATTEMPT": 1, "DATE": date, "TIME": time, "FLAGS": ""}})
 
-        with open(PATH, "w") as out_file:
+        with open(PATH, "w", encoding="utf-8") as out_file:
             json.dump(data, out_file, indent=4, sort_keys=True)
     except (KeyError, IOError):
         pass
@@ -261,12 +266,12 @@ def create_account(email, password):
     session.pop('_flashes', None)
 
     try:
-        with open(PATH, "r") as in_file:
+        with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
 
         data["USERS"].append({email: {"KEY": "", "PASSWORD": "", "USERNAME": getpass.getuser()}})
 
-        with open(PATH, "w") as out_file:
+        with open(PATH, "w", encoding="utf-8") as out_file:
             json.dump(data, out_file, indent=4, sort_keys=True)
     except(KeyError, IOError, PermissionError):
         flash("Unable to create new account.", category="danger")
@@ -286,7 +291,7 @@ def change_password(email, password):
     :return: Boolean state for password change
     """
     try:
-        with open(PATH, "r") as in_file:
+        with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
 
         for user in data["USERS"]:
@@ -295,7 +300,7 @@ def change_password(email, password):
                     cipher_key, new_password = handle_password(None, password)
                     user[key].update(KEY=cipher_key, PASSWORD=new_password)
 
-                    with open(PATH, "w") as out_file:
+                    with open(PATH, "w", encoding="utf-8") as out_file:
                         json.dump(data, out_file, indent=4, sort_keys=True)
                     return True
         return False
