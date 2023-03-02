@@ -41,9 +41,6 @@ def login():
 
         if check_user(email, password):
             return redirect(url_for("index"))
-        else:
-            return redirect(url_for("login"))
-
     return render_template("login.html")
 
 @app.route("/index")
