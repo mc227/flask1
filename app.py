@@ -43,6 +43,30 @@ def login():
             return redirect(url_for("index"))
     return render_template("login.html")
 
+@app.route("/password-reset", methods=["GET", "POST"])
+def reset():
+    """
+    Attempts to reset account password after performing check.
+    :return: Password Reset page
+    """
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        if check_password(password):
+            if change_password(email, password):
+                session.pop('_flashes', None)
+                flash("Password changed successfully.", category="success")
+                return redirect(url_for("login"))
+            else:
+                flash("User does not exist.", category="danger")
+
+    return render_template("password-reset.html")
+
+# 
+
+# 
 @app.route("/index")
 def index():
     """
@@ -73,27 +97,6 @@ def register():
     return render_template("register.html")
 
 
-@app.route("/password-reset", methods=["GET", "POST"])
-def reset():
-    """
-    Attempts to reset account password after performing check.
-    :return: Password Reset page
-    """
-    if request.method == "POST":
-
-        email = request.form["email"]
-        password = request.form["password"]
-
-        if check_password(password):
-            if change_password(email, password):
-                session.pop('_flashes', None)
-                flash("Password changed successfully.", category="success")
-                return redirect(url_for("login"))
-            else:
-                flash("User does not exist.", category="danger")
-
-    return render_template("password-reset.html")
-
 
 @app.route("/about")
 def about():
@@ -109,6 +112,7 @@ def contact():
     renders contact page
     """
     return render_template("contact.html")
+
 @app.route("/admin")
 def admin():
     """
@@ -189,16 +193,21 @@ def check_password(password):
     :param password:
     :return: Boolean state for password check
     """
+    common_passwords = []
+
     try:
-        with open(PATH, "r", encoding="utf-8") as in_file:
+        with open(PATH, "r") as in_file:
             data = json.load(in_file)
 
+        common_passwords = data["COMMON PASSWORDS"]
     except (KeyError, IOError):
         pass
 
     if 8 < len(password) > 64:
-        flash("Your password must be greater than 7 characters and less than 65.",
-               category="warning")
+        flash("Your password must be greater than 7 characters and less than 65.", category="warning")
+        return False
+    elif password in common_passwords:
+        flash("Your password is too common, please try something more complicated.", category="warning")
         return False
 
     return True
