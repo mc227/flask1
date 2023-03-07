@@ -86,11 +86,13 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
 
-        if check_password(password):
-            create_account(email, password)
-            flash("Your account has been created successfully. Please login to continue.",
-                  category="success")
-            return redirect(url_for("login"))
+        if check_user_exists(email):
+            flash("User already exists.", category="warning")
+        elif check_password(password):
+            if create_account(email, password):
+                flash("Your account has been created successfully. Please login to continue.",
+                      category="success")
+                return redirect(url_for("login"))
         else:
             flash("Your password does not meet the criteria. Please try again.", category="warning")
 
@@ -284,30 +286,40 @@ def check_logs(ip_addr):
 
 def create_account(email, password):
     """
-    Creates new account from supplied email/password then change password
-    for encrypted set. Prompts user if errors occur.
+    Creates a new user account.
     :param email:
     :param password:
-    :return: Boolean state for account creation
     """
-    session.pop('_flashes', None)
-
     try:
         with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
+    except (IOError, ValueError):
+        data = {"USERS": []}
 
-        data["USERS"].append({email: {"KEY": "", "PASSWORD": "", "USERNAME": getpass.getuser()}})
+    for user in data["USERS"]:
+        if email in user:
+            flash("User already exists.", category="warning")
+            return False
 
-        with open(PATH, "w", encoding="utf-8") as out_file:
-            json.dump(data, out_file, indent=4, sort_keys=True)
-    except(KeyError, IOError, PermissionError):
-        flash("Unable to create new account.", category="danger")
-        return False
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+    ciphered_text = cipher_suite.encrypt(str.encode(password))
+    user_data = {
+        email: {
+            "KEY": bytes.decode(key),
+            "PASSWORD": bytes.decode(ciphered_text),
+            "USERNAME": email.split("@")[0],
+            "REGISTERED": get_date()
+        }
+    }
 
-    change_password(email, password)
-    flash("New account created successfully.", category="success")
+    data["USERS"].append(user_data)
+
+    with open(PATH, "w", encoding="utf-8") as out_file:
+        json.dump(data, out_file)
 
     return True
+
 
 
 def change_password(email, password):

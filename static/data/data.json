@@ -469,14 +469,20 @@
     "LOGS": [
         {
             "127.0.0.1": {
-                "ATTEMPT": 1,
-                "DATE": "2023-03-06",
+                "ATTEMPT": 4,
+                "DATE": "2023-03-07",
                 "FLAGS": "",
-                "TIME": "23:44:14"
+                "TIME": "00:58:43"
             }
         }
     ],
     "USERS": [
-        
+        {
+            "markcostales.mark@gmail.com": {
+                "KEY": "282qGhL_OLq42AbiV_A0bvYEeirilbwID-DG3Gdhj4A=",
+                "PASSWORD": "gAAAAABkBtI67PyZ14sv3wRTOoLwL03RttZ0OMK2IGlIKbUhobcr5bqMrRSbQREkl6p6qtRNRbgl_2OFqcLbH-RRHwh_v_uxvw==",
+                "USERNAME": "Mark Costales"
+            }
+        }
     ]
 }
