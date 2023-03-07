@@ -3,6 +3,7 @@ Dereck Watters Flask App 2.0
 """
 import getpass
 import json
+import json
 import os
 from datetime import datetime
 
@@ -208,7 +209,6 @@ def handle_password(key, password, decrypt=False):
 
         return cipher_key, new_password
 
-
 def check_password(password):
     """
     Checks password against NIST SP 800-63B criteria and flashes
@@ -219,7 +219,7 @@ def check_password(password):
     common_passwords = []
 
     try:
-        with open(PATH, "r") as in_file:
+        with open(PATH, "r", encoding="utf-8") as in_file:
             data = json.load(in_file)
 
         common_passwords = data["COMMON PASSWORDS"]
@@ -227,13 +227,16 @@ def check_password(password):
         pass
 
     if 8 < len(password) > 64:
-        flash("Your password must be greater than 7 characters and less than 65.", category="warning")
+        flash("Your password must be greater than 7 characters and less than 65.",
+              category="warning")
         return False
     elif password in common_passwords:
-        flash("Your password is too common, please try something more complicated.", category="warning")
+        flash("Your password is too common, please try something more complicated.",
+              category="warning")
         return False
 
     return True
+
 
 
 def check_logs(ip_addr):
