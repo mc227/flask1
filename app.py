@@ -54,19 +54,19 @@ def reset():
         email = request.form["email"]
         password = request.form["password"]
 
-        if check_password(password):
-            if change_password(email, password):
-                session.pop('_flashes', None)
-                flash("Password changed successfully.", category="success")
-                return redirect(url_for("login"))
+        if check_user_exists(email):
+            if check_password(password):
+                if change_password(email, password):
+                    session.pop('_flashes', None)
+                    flash("Password changed successfully.", category="success")
+                    return redirect(url_for("login"))
             else:
-                flash("User does not exist.", category="danger")
+                flash("Your password does not meet the criteria. Please try again.", category="warning")
+        else:
+            flash("User does not exist.", category="danger")
 
     return render_template("password-reset.html")
 
-# 
-
-# 
 @app.route("/index")
 def index():
     """
@@ -157,6 +157,27 @@ def check_user(email, password):
         flash("Cannot communicate with server. Please try again later.", category="danger")
         return False
 
+def check_user_exists(email):
+    """
+    Checks if user exists.
+    :param email:
+    :return: Boolean state for user check
+    """
+    try:
+        with open(PATH, "r", encoding="utf-8") as in_file:
+            data = json.load(in_file)
+
+        user_exists = False
+        for user in data["USERS"]:
+            if email in user:
+                user_exists = True
+                break
+
+        return user_exists
+
+    except (KeyError, IOError):
+        flash("Cannot communicate with server. Please try again later.", category="danger")
+        return False
 
 
 def handle_password(key, password, decrypt=False):
